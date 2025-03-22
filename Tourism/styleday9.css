@@ -1,0 +1,16 @@
+.bg-container{
+    background-image:url("https://ik.imagekit.io/jap5d6wbb/image/sea-ocean?updatedAt=1741023418335");
+    width: 300px;
+    height: 600px;
+    background-size: cover;
+  
+    
+    
+}
+
+.bg-container-image{
+    background-image: url("https://ik.imagekit.io/jap5d6wbb/image/taj-mahal?updatedAt=1741024393563");
+    width: 360px;
+    height: 540px;
+    background-size: cover;
+}

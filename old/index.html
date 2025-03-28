@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Form</title>
+
+    <!--TAILWIND CSS-->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+</head>
+
+<body>
+
+    <form id="form" class="px-5 py-5 w-[40%] space-y-5">
+        <!--Name-->
+        <div class="flex flex-col justify-start items-start">
+            <label for="name">Name</label>
+            <input id="name" class="border border-black" />
+        </div>
+
+
+
+
+        <!--Email-->
+        <div class="flex flex-col justify-start items-start">
+            <label for="email">Email</label>
+            <input id="email" class="border border-black" />
+
+            <p id="errormail" class="text-red-600"></p>
+            <p id="rightmail" class="text-green-600"></p>
+        </div>
+
+
+
+
+        <!--Message-->
+        <div class="flex flex-col justify-start items-start">
+            <label for="message">Message</label>
+            <textarea id="message" class="border border-black"></textarea>
+
+        </div>
+
+        <div>
+            <button id="btn" class="border border-black bg-slate-900 text-white rounded-lg py-2 px-6">Submit</button>
+
+        </div>
+
+
+
+    </form>
+
+    <script>
+        function validateData(name, email, message) {
+            console.log("validateData:", name, email, message)
+
+            let isValid = true
+
+            var regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+            if (!regex.test(email)) {
+               mailElement.textContent="Please Enter a Your vaild Email Address"
+               mailElement.classList.remove("hidden")
+               mailElementTrue.classList.add("hidden")
+               isValid = false
+
+                  //Hide Invalid text after 2 seconds.
+                  setTimeout(() => {
+                    mailElement.classList.add("hidden");
+                }, 2000);
+            } else {
+                 mailElementTrue.textContent="Successfully Entered a your vaild Email Address"
+                 mailElementTrue.classList.remove("hidden")
+                 mailElement.classList.add("hidden")
+                 isValid=true
+
+                  //Hide valid text after 2 seconds.
+                setTimeout(() => {
+                    mailElementTrue.classList.add("hidden");
+                }, 1000);
+            }
+
+
+            return (isValid)
+
+     
+
+        }
+
+        function saveDataToDB(name, email, message){
+
+        }
+
+
+
+
+        const nameElement = document.getElementById("name")
+        const emailElement = document.getElementById("email")
+        const messageElement = document.getElementById("message")
+        const formElement = document.getElementById("form")
+        const mailElement=document.getElementById("errormail")
+        const mailElementTrue=document.getElementById("rightmail")
+
+     
+
+        formElement.addEventListener("submit", (e) => {
+            // 1. change form default behaviour 
+
+            e.preventDefault()
+
+            /**2. Get value from input
+
+
+
+            3. To valid data from step-2
+
+               basic validatation 
+               type=""
+
+               Regex validation
+            
+            // */
+
+
+
+
+
+
+
+
+            console.log(nameElement.value)
+            console.log(emailElement.value)
+            console.log(messageElement.value)
+
+
+
+
+            //Validation of Data
+            const res = validateData(nameElement.value, emailElement.value, messageElement.value)
+
+            console.log(res)
+
+            if(res){
+                saveDataToDB(nameElement.value, emailElement.value, messageElement.value)
+            }
+
+
+
+        })
+
+    </script>
+
+</body>
+
+</html>

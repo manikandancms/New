@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Form</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!--FireBase SDK-->
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    <script defer src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <style>
+        .fade-out {
+            transition: opacity 1s ease-in-out, font-size 0.5s ease-in-out;
+            opacity: 0;
+            font-size: 0.9em;
+            /* slightly smaller when fading out */
+        }
+
+        .fade-in {
+            transition: opacity 0.3s ease-in-out, font-size 0.3s ease-in-out;
+            opacity: 1;
+            font-size: 1em;
+            /* normal font size */
+        }
+    </style>
+</head>
+
+<body>
+
+    <form id="form" class="px-5 py-5 w-[40%] space-y-5">
+        <div class="flex flex-col justify-start items-start">
+            <label for="name">Name</label>
+            <input id="name" class="border border-black" />
+        </div>
+
+        <div class="flex flex-col justify-start items-start">
+            <label for="email">Email</label>
+            <input id="email" class="border border-black" />
+
+            <p id="errormail" class="text-red-600 hidden"></p>
+            <p id="rightmail" class="text-green-600 hidden"></p>
+        </div>
+
+        <div class="flex flex-col justify-start items-start">
+            <label for="message">Message</label>
+            <textarea id="message" class="border border-black"></textarea>
+        </div>
+
+        <div>
+            <button id="btn" class="border border-black bg-slate-900 text-white rounded-lg py-2 px-6">Submit</button>
+        </div>
+    </form>
+
+    <script>
+        function validateData(name, email, message) {
+            console.log("validateData:", name, email, message);
+
+            let isValid = true;
+
+            const regex = /^[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
+            if (!regex.test(email)) {
+                mailElement.textContent = "Please Enter a Your valid Email Address";
+                mailElement.classList.remove("hidden");
+                mailElement.classList.add("fade-in");
+                mailElementTrue.classList.add("hidden");
+                isValid = false;
+
+                setTimeout(() => {
+                    mailElement.classList.remove('fade-in');
+                    mailElement.classList.add("fade-out");
+                    setTimeout(() => {
+                        mailElement.classList.add("hidden");
+                        mailElement.classList.remove("fade-out");
+                    }, 600)
+
+                }, 2000);
+            } else {
+                mailElementTrue.textContent = "Successfully Entered a your valid Email Address";
+                mailElementTrue.classList.remove("hidden");
+                mailElementTrue.classList.add('fade-in');
+                mailElement.classList.add("hidden");
+                isValid = true;
+
+                setTimeout(() => {
+                    mailElementTrue.classList.remove('fade-in');
+                    mailElementTrue.classList.add("fade-out");
+                    setTimeout(() => {
+                        mailElementTrue.classList.add("hidden");
+                        mailElementTrue.classList.remove("fade-out");
+                    }, 600)
+                }, 1000);
+            }
+
+            return isValid;
+        }
+
+        function saveDataToDB(name, email, message) {
+            console.log("Saving data to DB:", { name, email, message });
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyADsj9oi4RVlNjbe-fjsx6q1Wf6cI5QQB4",
+                authDomain: "test-formmine.firebaseapp.com",
+                databaseURL: "https://test-formmine-default-rtdb.asia-southeast1.firebasedatabase.app",
+                projectId: "test-formmine",
+                storageBucket: "test-formmine.firebasestorage.app",
+                messagingSenderId: "807603843845",
+                appId: "1:807603843845:web:eb311e39cbce610f1a7d6c"
+            };
+
+            if (!firebase.app.legnth) {
+                firebase.initializeApp(firebaseConfig)
+            };
+
+            const db = firebase.database().ref("LoginForm");
+
+            db.push({
+                name: name,
+                email: email,
+                message: message
+            })
+
+            formElement.reset()
+            mailElement.textContent = ""
+            mailElementTrue.textContent = ""
+        }
+
+        const nameElement = document.getElementById("name");
+        const emailElement = document.getElementById("email");
+        const messageElement = document.getElementById("message");
+        const formElement = document.getElementById("form");
+        const mailElement = document.getElementById("errormail");
+        const mailElementTrue = document.getElementById("rightmail");
+
+        formElement.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            console.log(nameElement.value);
+            console.log(emailElement.value);
+            console.log(messageElement.value);
+
+            const res = validateData(nameElement.value, emailElement.value, messageElement.value);
+
+            console.log(res);
+
+            if (res) {
+                saveDataToDB(nameElement.value, emailElement.value, messageElement.value);
+            }
+        });
+    </script>
+</body>
+
+</html>
